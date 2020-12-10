@@ -1,17 +1,10 @@
-chrome.runtime.onInstalled.addListener(function(details) {
-    var rule = {
-      conditions: [
-        new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: { hostSuffix: 'rollbar.com' },
-        })
-      ],
-      actions: [ new chrome.declarativeContent.ShowPageAction() ]
-    };
+chrome.browserAction.onClicked.addListener(function(tab) { 
   
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-      chrome.declarativeContent.onPageChanged.addRules([rule]);
-    });
-  });
+  alert('icon clicked')
+// TODO: add message for popup page -> log event with Rollbar!
+chrome.tabs.create({url: chrome.extension.getURL('background.html')});
+});
+
 
 // Listen for any changes to the URL of any tab.
 chrome.tabs.onUpdated.addListener(checkForValidUrl);
@@ -20,6 +13,6 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     // If the tabs url starts with "http://specificsite.com"...
     if (tab.url.match('https://rollbar.com/DavidK_test/all/rql/?projects=432118&graph_type=line') > -1) {
         // ... show the page action.
-        chrome.pageAction.show(tabId);
+        //TODO: redesign -> if on Rollbar RQL then show button
     }
 };
