@@ -62,8 +62,8 @@
         target.setAttribute('data-y', y)
       }
 
-      // this function is used later in the resizing and gesture demos
-      window.dragMoveListener = dragMoveListener
+      /*this function is used later in the resizing and gesture demos
+      window.dragMoveListener = dragMoveListener*/
 
       /* The dragging code for '.draggable' from the demo above
       * applies to this demo as well so it doesn't have to be repeated. */
@@ -71,7 +71,7 @@
       // enable draggables to be dropped into this
       interact('.dropzone').dropzone({
         // only accept elements matching this CSS selector
-        accept: '#yes-drop',
+        accept: '#any_input, #from, #select, #where, #table, #star, #group_by, #order_by, #limit',
         // Require a 75% element overlap for a drop to be possible
         overlap: 0.75,
 
@@ -88,17 +88,19 @@
           // feedback the possibility of a drop
           dropzoneElement.classList.add('drop-target')
           draggableElement.classList.add('can-drop')
-          draggableElement.textContent = 'Dragged in'
+          //draggableElement.textContent = 'Dragged in'
         },
         ondragleave: function (event) {
           // remove the drop feedback style
           event.target.classList.remove('drop-target')
           event.relatedTarget.classList.remove('can-drop')
-          event.relatedTarget.textContent = 'Dragged out'
+          //event.relatedTarget.textContent = 'Dragged out'
         },
-        ondrop: function (event) {
+
+        /*ondrop: function (event) {
           event.relatedTarget.textContent = 'Dropped'
-        },
+        }, */
+
         ondropdeactivate: function (event) {
           // remove active dropzone feedback
           event.target.classList.remove('drop-active')
@@ -111,7 +113,7 @@
           inertia: true,
           modifiers: [
             interact.modifiers.restrictRect({
-              restriction: 'parent',
+              restriction: '.items',
               endOnly: true
             })
           ],
@@ -122,14 +124,51 @@
 
         </script>
 
-      <div id="no-drop" class="drag-drop"> #no-drop </div>
+        <script>
+         function DocsTab() {
+            Rollbar.info("RQL docs requested");
+              window.open( 
+                "https://docs.rollbar.com/docs/rql", "_blank"); 
+          } 
+          document.addEventListener('DOMContentLoaded', function () {
+              document.getElementById('rql_btn').addEventListener('click', DocsTab);
+            });
+        </script> 
 
-      <div id="yes-drop" class="drag-drop"> #yes-drop </div>
+<div class="enclosure">
 
-      <div id="outer-dropzone" class="dropzone">
-        #outer-dropzone
-        <div id="inner-dropzone" class="dropzone">#inner-dropzone</div>
+<div class="items">
+
+    <div id ="req_box" class="store">Required
+      <div id="select" class="drag-drop">Select</div>
+      <div id="from" class="drag-drop">From</div>
+      <div id="table" class="drag-drop">
+        <select name="tables" id="tbl_pick">
+          <option value="it_oc">item_occurence</option>
+          <option value="deploy">deploy</option>
+        </select>
       </div>
+      <div id="where" class="drag-drop">Where</div>
+    </div>
 
+    <div id ="opt_box" class="store">Optional
+      <div id="star" class="drag-drop">*</div>
+      <div id="group_by" class="drag-drop">Group by</div>
+      <div id="order_by" class="drag-drop">Order by</div>
+      <div id="limit" class="drag-drop">Limit</div>
+      <div id="any_input" class="drag-drop">
+        <input class="input-block">
+      </div>
+    </div>
+
+
+
+      <div id="first-dropzone" class="dropzone"></div>
+      <div id="second-dropzone" class="dropzone"></div>
+
+      <button id="rql_btn" class="button">RQL docs</button>
+</div>
+
+</div>
    </BODY>
 </HTML>
