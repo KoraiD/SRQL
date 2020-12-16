@@ -2,171 +2,86 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <HTML>
    <HEAD>
-      <TITLE>SRQL query builder</TITLE>
-      <script src="rollbar.js"></script>
-      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous"> 
-      <script src="https://unpkg.com/interactjs/dist/interact.min.js" crossorigin="anonymous"></script>
-      <link rel="stylesheet" href="styles.css">
+<TITLE>SRQL query builder</TITLE>
+<link rel="icon" 
+type="image/ico" 
+href="images/favicon.ico">
+<script src="scripts/rollbar.js"></script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="styles/styles.css">
+<link rel="stylesheet" href="styles/jquery-ui.min.css">
     </HEAD>
    <BODY>
-       <script>
-        Rollbar.info("Query builder inicialized");
-        </script>
-        <script>
-        // target elements with the "draggable" class
-      interact('.draggable')
-        .draggable({
-          // enable inertial throwing
-          inertia: true,
-          // keep the element within the area of it's parent
-          modifiers: [
-            interact.modifiers.restrictRect({
-              restriction: 'parent',
-              endOnly: true
-            })
-          ],
-          // enable autoScroll
-          autoScroll: true,
+<script>
+Rollbar.info("Query builder inicialized");
+</script>
+  <script>
+  $( function() {
+    $( ".drag-drop" ).draggable({ snap: true, 
+      stop: function() {
+        var offset = $(this).offset();
+        var xPos = offset.left;
+        var yPos = offset.top;
+        var id = $(this).attr('id')
+        Rollbar.debug("current div ID: " + String(id));
+        Rollbar.debug("PositionX: " + String(xPos));
+    }
+    });
+    $( ".stick" ).draggable({ snap: ".dropzone" });
+  } );
+  </script>
 
-          listeners: {
-            // call this function on every dragmove event
-            move: dragMoveListener,
-
-            // call this function on every dragend event
-            end (event) {
-              var textEl = event.target.querySelector('p')
-
-              textEl && (textEl.textContent =
-                'moved a distance of ' +
-                (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
-                          Math.pow(event.pageY - event.y0, 2) | 0))
-                  .toFixed(2) + 'px')
-            }
-          }
-        })
-        function dragMoveListener (event) {
-        var target = event.target
-        // keep the dragged position in the data-x/data-y attributes
-        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-        // translate the element
-        target.style.webkitTransform =
-          target.style.transform =
-            'translate(' + x + 'px, ' + y + 'px)'
-
-        // update the posiion attributes
-        target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
-      }
-
-      /*this function is used later in the resizing and gesture demos
-      window.dragMoveListener = dragMoveListener*/
-
-      /* The dragging code for '.draggable' from the demo above
-      * applies to this demo as well so it doesn't have to be repeated. */
-
-      // enable draggables to be dropped into this
-      interact('.dropzone').dropzone({
-        // only accept elements matching this CSS selector
-        accept: '#any_input, #from, #select, #where, #table, #star, #group_by, #order_by, #limit',
-        // Require a 75% element overlap for a drop to be possible
-        overlap: 0.75,
-
-        // listen for drop related events:
-
-        ondropactivate: function (event) {
-          // add active dropzone feedback
-          event.target.classList.add('drop-active')
-        },
-        ondragenter: function (event) {
-          var draggableElement = event.relatedTarget
-          var dropzoneElement = event.target
-
-          // feedback the possibility of a drop
-          dropzoneElement.classList.add('drop-target')
-          draggableElement.classList.add('can-drop')
-          //draggableElement.textContent = 'Dragged in'
-        },
-        ondragleave: function (event) {
-          // remove the drop feedback style
-          event.target.classList.remove('drop-target')
-          event.relatedTarget.classList.remove('can-drop')
-          //event.relatedTarget.textContent = 'Dragged out'
-        },
-
-        /*ondrop: function (event) {
-          event.relatedTarget.textContent = 'Dropped'
-        }, */
-
-        ondropdeactivate: function (event) {
-          // remove active dropzone feedback
-          event.target.classList.remove('drop-active')
-          event.target.classList.remove('drop-target')
-        }
-      })
-
-      interact('.drag-drop')
-        .draggable({
-          inertia: true,
-          modifiers: [
-            interact.modifiers.restrictRect({
-              restriction: '.items',
-              endOnly: true
-            })
-          ],
-          autoScroll: true,
-          // dragMoveListener from the dragging demo above
-          listeners: { move: dragMoveListener }
-        })
-
-        </script>
-
-        <script>
-         function DocsTab() {
-            Rollbar.info("RQL docs requested");
-              window.open( 
-                "https://docs.rollbar.com/docs/rql", "_blank"); 
-          } 
-          document.addEventListener('DOMContentLoaded', function () {
-              document.getElementById('rql_btn').addEventListener('click', DocsTab);
-            });
-        </script> 
-
+  <script>
+    function DocsTab() {
+      Rollbar.info("RQL docs requested");
+        window.open( 
+          "https://docs.rollbar.com/docs/rql", "_blank"); 
+    } 
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('rql_btn').addEventListener('click', DocsTab);
+      });
+  </script> 
 <div class="enclosure">
 
 <div class="items">
 
-    <div id ="req_box" class="store">Required
-      <div id="select" class="drag-drop">Select</div>
-      <div id="from" class="drag-drop">From</div>
-      <div id="table" class="drag-drop">
-        <select name="tables" id="tbl_pick">
-          <option value="it_oc">item_occurence</option>
-          <option value="deploy">deploy</option>
-        </select>
-      </div>
-      <div id="where" class="drag-drop">Where</div>
+  <div id ="req_box" class="store">Required
+    <div id="select" class="stick">Select</div>
+    <div id="from" class="drag-drop">From</div>
+    <div id="table" class="drag-drop">
+      <select name="tables" id="tbl_pick">
+        <option value="it_oc">item_occurence</option>
+        <option value="deploy">deploy</option>
+      </select>
     </div>
+    <div id="where" class="drag-drop">Where</div>
+  </div>
 
-    <div id ="opt_box" class="store">Optional
-      <div id="star" class="drag-drop">*</div>
-      <div id="group_by" class="drag-drop">Group by</div>
-      <div id="order_by" class="drag-drop">Order by</div>
-      <div id="limit" class="drag-drop">Limit</div>
-      <div id="any_input" class="drag-drop">
-        <input class="input-block">
-      </div>
+  <div id ="opt_box" class="store">Optional
+    <div id="star" class="drag-drop">*</div>
+    <div id="group_by" class="drag-drop">Group by</div>
+    <div id="order_by" class="drag-drop">Order by</div>
+    <div id="limit" class="drag-drop">Limit</div>
+    <!--TODO: make textbox width dynamic-->
+    <div id="any_input" class="drag-drop">
+      <input id="any_text" class="input-block">
     </div>
+  </div>
 
+<!--
+    <div id ="opt_box" class="store">Operators
+    <div id="add" class="drag-drop">+</div>
+  </div>
 
+  <div id ="opt_box" class="store">Functions
+    <div id="count" class="drag-drop">Count(*)</div>
+  </div>
+-->
+    <div id="first-dropzone" class="dropzone"></div>
+    <div id="second-dropzone" class="dropzone"></div>
 
-      <div id="first-dropzone" class="dropzone"></div>
-      <div id="second-dropzone" class="dropzone"></div>
-
-      <button id="rql_btn" class="button">RQL docs</button>
+    <button id="rql_btn" class="button">RQL docs</button>
 </div>
 
 </div>

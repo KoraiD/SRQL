@@ -55,7 +55,7 @@
 .drop-target {
   color:#fff;
   background-color: #343f55;
-  border-color: #fff;
+  border-color: rgb(0, 0, 0);
   border-style: solid;
 }
 
@@ -64,7 +64,7 @@
   min-width: 40px;
   padding: 1em 0.5em;
   margin: 1rem 0 0 1rem;
-
+  /*float:left;*/
   color: #fff;
   background-color: #3c72ff;
   border: solid 2px #000;
@@ -80,4 +80,22 @@
 .drag-drop.can-drop {
   color: #000;
   background-color: #dcdcdc;
+}
+
+.stick {
+  display: inline-block;
+  min-width: 40px;
+  padding: 1em 0.5em;
+  margin: 1rem 0 0 1rem;
+  /*float:left;*/
+  color: #fff;
+  background-color: #22335e;
+  border: solid 2px #000;
+  border-radius: 8px;
+
+  touch-action: none;
+  -webkit-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+
+  transition: background-color 0.3s;
 }
