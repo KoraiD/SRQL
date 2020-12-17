@@ -17,13 +17,32 @@ href="images/favicon.ico">
 Rollbar.info("Query builder inicialized");
 </script>
   <script>
+    $( document ).ready(function() {
+      var offset = $('.dropzone').offset();
+      x_pos = offset.left;
+      y_pos = offset.top;
+      width = offset.width;
+      //Rollbar.debug("Dropzone pos: " + String(x_pos));
+    });
+
+//TODO: add destroy box - remove dropped elements
   $( function() {
     $( ".drag-drop" ).draggable({ snap: true, 
       stop: function() {
         var offset = $(this).offset();
         var xPos = offset.left;
         var yPos = offset.top;
-        var id = $(this).attr('id')
+        var id = $(this).attr('id');
+        //console.log(String(x_pos) + ' ' + String(xPos));
+        console.log(id);
+        //TODO: handle each dropzone coordinate
+        if(id =="any_input" & (yPos>y_pos & xPos>x_pos)){
+          var $div = $("<div>", {id: "any_input", "class": "drag-drop"});
+          var $input = $("<input>", {id:"any_text", "class": "input-block"});
+          $("#opt_box").append($div);
+          $div.append($input);
+          $div.draggable({snap: true});
+        }
         Rollbar.debug("current div ID: " + String(id));
         Rollbar.debug("PositionX: " + String(xPos));
     }
@@ -78,8 +97,9 @@ Rollbar.info("Query builder inicialized");
     <div id="count" class="drag-drop">Count(*)</div>
   </div>
 -->
-    <div id="first-dropzone" class="dropzone"></div>
-    <div id="second-dropzone" class="dropzone"></div>
+    <div id="dropzone" class="dropzone"></div>
+
+    <div id="rql_viewer" class="viewer"></div>
 
     <button id="rql_btn" class="button">RQL docs</button>
 </div>
