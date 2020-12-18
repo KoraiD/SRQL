@@ -22,6 +22,7 @@ Rollbar.info("Query builder inicialized");
       x_pos = offset.left;
       y_pos = offset.top;
       width = offset.width;
+      table = [["frame", x_pos, y_pos]];
       //Rollbar.debug("Dropzone pos: " + String(x_pos));
     });
 
@@ -33,6 +34,17 @@ Rollbar.info("Query builder inicialized");
         var xPos = offset.left;
         var yPos = offset.top;
         var id = $(this).attr('id');
+
+        let index = table.findIndex(x => x[0] === id);
+
+        if (index !== -1) {
+          table[index] = [id, xPos, yPos];
+        }
+        else{
+          table.push([id, xPos, yPos]);
+        }
+
+        console.log(table);
         //console.log(String(x_pos) + ' ' + String(xPos));
         console.log(id);
         //TODO: handle each dropzone coordinate
