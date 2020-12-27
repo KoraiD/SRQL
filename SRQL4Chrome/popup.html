@@ -27,7 +27,7 @@ Rollbar.info("Query builder inicialized");
     });
 
 //TODO: add destroy box - remove dropped elements
-  $( function() {
+  $( function dragFunction() {
     $( ".drag-drop" ).draggable({ snap: true, 
       stop: function() {
         var offset = $(this).offset();
@@ -54,6 +54,7 @@ Rollbar.info("Query builder inicialized");
           $("#opt_box").append($div);
           $div.append($input);
           $div.draggable({snap: true});
+          dragFunction();
         }
         Rollbar.debug("current div ID: " + String(id));
         Rollbar.debug("PositionX: " + String(xPos));
