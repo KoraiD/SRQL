@@ -50,11 +50,10 @@ Rollbar.info("Query builder inicialized");
         }
 
         console.log(table);
-        //console.log(String(x_pos) + ' ' + String(xPos));
-        console.log(id);
+        console.log(id + " " + startyPos + " " + y_pos + " X: " + startxPos + " " + x_pos);
         //TODO: handle each dropzone coordinate
-        if(id =="any_input" & (yPos>y_pos & xPos>x_pos)){
-          console.log("Starting positions: " + String(startxPos) + " " + String(startyPos))
+        //TDOD: remove unnecessary logs
+        if(id =="any_input" & (startyPos<y_pos) & (yPos>=y_pos & xPos>=x_pos)){
           var $div = $("<div>", {id: "any_input", "class": "drag-drop"});
           var $input = $("<input>", {id:"any_text", "class": "input-block"});
           $("#opt_box").append($div);
