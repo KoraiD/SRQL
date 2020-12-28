@@ -29,6 +29,11 @@ Rollbar.info("Query builder inicialized");
 //TODO: add destroy box - remove dropped elements
   $( function dragFunction() {
     $( ".drag-drop" ).draggable({ snap: true, 
+      start: function(){
+        var startOffset = $(this).offset();
+        startxPos = startOffset.left;
+        startyPos = startOffset.top;
+      },
       stop: function() {
         var offset = $(this).offset();
         var xPos = offset.left;
@@ -49,6 +54,7 @@ Rollbar.info("Query builder inicialized");
         console.log(id);
         //TODO: handle each dropzone coordinate
         if(id =="any_input" & (yPos>y_pos & xPos>x_pos)){
+          console.log("Starting positions: " + String(startxPos) + " " + String(startyPos))
           var $div = $("<div>", {id: "any_input", "class": "drag-drop"});
           var $input = $("<input>", {id:"any_text", "class": "input-block"});
           $("#opt_box").append($div);
