@@ -69,6 +69,21 @@ Rollbar.info("Query builder inicialized");
   } );
   </script>
 
+<script>
+  function Convert() {
+    var sortedTable = table.sort(function(a, b) {
+      if (a[2] == b[2]) {
+        return a[1] - b[1];
+      }
+      return a[2] - b[2];
+    });
+    console.log(sortedTable);
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('conv_btn').addEventListener('click', Convert);
+    });
+</script> 
+
   <script>
     function DocsTab() {
       Rollbar.info("RQL docs requested");
@@ -100,7 +115,7 @@ Rollbar.info("Query builder inicialized");
     <div id="group_by" class="drag-drop">Group by</div>
     <div id="order_by" class="drag-drop">Order by</div>
     <div id="limit" class="drag-drop">Limit</div>
-    <!--TODO: make textbox width dynamic-->
+    <!--TODO: make textbox width dynamic, make size equal with the other elements-->
     <div id="any_input" class="drag-drop">
       <input id="any_text" class="input-block">
     </div>
@@ -120,6 +135,7 @@ Rollbar.info("Query builder inicialized");
     <div id="rql_viewer" class="viewer"></div>
 
     <button id="rql_btn" class="button">RQL docs</button>
+    <button id="conv_btn" class="button">Convert</button>
 </div>
 
 </div>
