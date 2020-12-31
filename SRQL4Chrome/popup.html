@@ -49,8 +49,7 @@ Rollbar.info("Query builder inicialized");
           table.push([id, xPos, yPos]);
         }
 
-        console.log(table);
-        console.log(id + " " + startyPos + " " + y_pos + " X: " + startxPos + " " + x_pos);
+        //console.log(id + " " + startyPos + " " + y_pos + " X: " + startxPos + " " + x_pos);
         //TODO: handle each dropzone coordinate
         //TDOD: remove unnecessary logs
         if(id =="any_input" & (startyPos<y_pos) & (yPos>=y_pos & xPos>=x_pos)){
@@ -70,13 +69,33 @@ Rollbar.info("Query builder inicialized");
   </script>
 
 <script>
+  function round(x) { 
+    if (x % 25 == 0) { 
+        return parseInt(Math.floor(x / 25)) * 25; 
+    } else { 
+        return (parseInt(Math.floor(x / 25)) * 25) + 25; 
+    } 
+  } 
+
   function Convert() {
+
+    var roundTable = function(arr) {
+      if ( typeof(arr) == "object") {
+          for (var i = 0; i < arr.length; i++) {
+              roundTable(arr[i]);
+          }
+      }
+      else arr[1] = round(arr[1]); 
+    }
+    
+    roundTable(table);
     var sortedTable = table.sort(function(a, b) {
       if (a[2] == b[2]) {
         return a[1] - b[1];
       }
       return a[2] - b[2];
     });
+    console.log(table)
     console.log(sortedTable);
   }
   document.addEventListener('DOMContentLoaded', function () {
