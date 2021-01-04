@@ -84,18 +84,23 @@ Rollbar.info("Query builder inicialized");
           for (var i = 0; i < arr.length; i++) {
               roundTable(arr[i]);
           }
+      } else if (typeof(arr) == "string"){
+            //TODO: handle name element properly
       }
-      else arr[1] = round(arr[1]); 
+      else arr = round(arr); 
     }
-    
-    roundTable(table);
+
+    console.log(table)
+
+    test = roundTable(table);
+
     var sortedTable = table.sort(function(a, b) {
       if (a[2] == b[2]) {
         return a[1] - b[1];
       }
       return a[2] - b[2];
     });
-    console.log(table)
+
     console.log(sortedTable);
   }
   document.addEventListener('DOMContentLoaded', function () {
