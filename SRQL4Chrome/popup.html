@@ -11,11 +11,13 @@ href="images/favicon.ico">
 <script src="scripts/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="styles/styles.css">
 <link rel="stylesheet" href="styles/jquery-ui.min.css">
+<link href="styles/prism.css" rel="stylesheet" />
     </HEAD>
    <BODY>
 <script>
 Rollbar.info("Query builder inicialized");
 </script>
+<script src="scripts/prism.js"></script>
   <script>
     $( document ).ready(function() {
       var offset = $('.dropzone').offset();
@@ -23,6 +25,7 @@ Rollbar.info("Query builder inicialized");
       y_pos = offset.top;
       width = offset.width;
       table = [["frame", x_pos, y_pos]];
+      inputNum = 1
       //Rollbar.debug("Dropzone pos: " + String(x_pos));
     });
 
@@ -54,7 +57,8 @@ Rollbar.info("Query builder inicialized");
         //TDOD: remove unnecessary logs
         if(id =="any_input" & (startyPos<y_pos) & (yPos>=y_pos & xPos>=x_pos)){
           var $div = $("<div>", {id: "any_input", "class": "drag-drop"});
-          var $input = $("<input>", {id:"any_text", "class": "input-block"});
+          var $input = $("<input>", {id:"any_text_" + String(inputNum), "class": "input-block"});
+          inputNum++;
           $("#opt_box").append($div);
           $div.append($input);
           $div.draggable({snap: true});
@@ -90,9 +94,9 @@ Rollbar.info("Query builder inicialized");
               roundedTable.push(roundTableFn(table[i]));
           };
 
-    roundedTable = roundedTable.filter(e => e[1]>=x_pos && e[2]>=y_pos);
+    roundedTable.filter(e => e[1]>=x_pos-10 && e[2]>=y_pos-10);
 
-    roundedTable = roundedTable.filter(e => !e.includes("frame"));
+    roundedTable.filter(e => !e.includes("frame"));
 
     var sortedTable = roundedTable.sort(function(a, b) {
       if (a[2] == b[2]) {
@@ -100,10 +104,23 @@ Rollbar.info("Query builder inicialized");
       }
       return a[2] - b[2];
     });
-    document.getElementById("rql_viewer").innerHTML += ('<div>'+
-      sortedTable[0]
-      +'</div>');
+
+    elements='<pre><code class="language-sql"> SELECT';
+    for(var i = 0; i < sortedTable.length; i++) {
+      elements += ' ' + sortedTable[i][0];
+    }
+    elements += '</code></pre>';
+    $('.viewer').append(elements);
     console.log(sortedTable);
+    //TODO: Should simplify script reload/apply
+    function load_js()
+   {
+      var head= document.getElementsByTagName('head')[0];
+      var script= document.createElement('script');
+      script.src= 'scripts/prism.js';
+      head.appendChild(script);
+   }
+   load_js();
   }
   document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('conv_btn').addEventListener('click', Convert);
@@ -125,25 +142,25 @@ Rollbar.info("Query builder inicialized");
 <div class="items">
 
   <div id ="req_box" class="store">Required
-    <div id="select" class="stick">Select</div>
-    <div id="from" class="drag-drop">From</div>
+    <div id="select" class="stick">SELECT</div>
+    <div id="from" class="drag-drop">FROM</div>
     <div id="table" class="drag-drop">
       <select name="tables" id="tbl_pick">
         <option value="it_oc">item_occurence</option>
         <option value="deploy">deploy</option>
       </select>
     </div>
-    <div id="where" class="drag-drop">Where</div>
+    <div id="where" class="drag-drop">WHERE</div>
   </div>
 
   <div id ="opt_box" class="store">Optional
     <div id="star" class="drag-drop">*</div>
-    <div id="group_by" class="drag-drop">Group by</div>
-    <div id="order_by" class="drag-drop">Order by</div>
-    <div id="limit" class="drag-drop">Limit</div>
+    <div id="group_by" class="drag-drop">GROUP BY</div>
+    <div id="order_by" class="drag-drop">ORDER BY</div>
+    <div id="limit" class="drag-drop">LIMIT</div>
     <!--TODO: make textbox width dynamic, make size equal with the other elements-->
     <div id="any_input" class="drag-drop">
-      <input id="any_text" class="input-block">
+      <input id="any_text_0" class="input-block">
     </div>
   </div>
 
