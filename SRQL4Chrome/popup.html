@@ -69,38 +69,40 @@ Rollbar.info("Query builder inicialized");
   </script>
 
 <script>
-  function round(x) { 
-    if (x % 25 == 0) { 
-        return parseInt(Math.floor(x / 25)) * 25; 
-    } else { 
-        return (parseInt(Math.floor(x / 25)) * 25) + 25; 
-    } 
-  } 
-
   function Convert() {
 
-    var roundTable = function(arr) {
-      if ( typeof(arr) == "object") {
-          for (var i = 0; i < arr.length; i++) {
-              roundTable(arr[i]);
-          }
-      } else if (typeof(arr) == "string"){
-            //TODO: handle name element properly
-      }
-      else arr = round(arr); 
-    }
+    var roundTableFn = function(table) {
+      var result = [];
+      var round = function(number) {
+        return 25 * Math.round(number/25);
+      };
+      table.forEach(el => {
+        if (isNaN(el)) {
+          result.push(el);
+        } else {
+          result.push(round(el));
+        }
+      })
+      return result;
+    };
+    var roundedTable = [];
+    for (var i = 0; i < table.length; i++) {
+              roundedTable.push(roundTableFn(table[i]));
+          };
 
-    console.log(table)
+    roundedTable = roundedTable.filter(e => e[1]>=x_pos && e[2]>=y_pos);
 
-    test = roundTable(table);
+    roundedTable = roundedTable.filter(e => !e.includes("frame"));
 
-    var sortedTable = table.sort(function(a, b) {
+    var sortedTable = roundedTable.sort(function(a, b) {
       if (a[2] == b[2]) {
         return a[1] - b[1];
       }
       return a[2] - b[2];
     });
-
+    document.getElementById("rql_viewer").innerHTML += ('<div>'+
+      sortedTable[0]
+      +'</div>');
     console.log(sortedTable);
   }
   document.addEventListener('DOMContentLoaded', function () {
