@@ -115,6 +115,7 @@ Rollbar.info("Query builder inicialized");
       elements += ' ' + sortedTable[i][0];
     }
     elements += '</code></pre>';
+    $('pre').remove();
     $('.viewer').append(elements);
     console.log(sortedTable);
     //TODO: Should simplify script reload/apply
@@ -153,7 +154,7 @@ Rollbar.info("Query builder inicialized");
     <div id="FROM" class="drag-drop">FROM</div>
     <div id="table" class="drag-drop">
       <select name="tables" id="tbl_pick">
-        <option value="it_oc">item_occurence</option>
+        <option value="item_occurence">item_occurence</option>
         <option value="deploy">deploy</option>
       </select>
     </div>
