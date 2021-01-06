@@ -29,9 +29,4 @@ The only other tool you will need to try is [Rollbar](https://rollbar.com/), the
 
 # Current ToDo list:
 
-- [x] Remove unused libraries
-- [x] Use Rollbar as Error Monitoring and log collector tool
-- [ ] Apply URL matching syntax - to allow popup only at the RQL page
-- [x] Implement new JS dependencies
-- [ ] Add basic query components
-- [ ] Build query assembly box and
+TODOs are listed inside the code!
