@@ -42,6 +42,11 @@ Rollbar.info("Query builder inicialized");
         var xPos = offset.left;
         var yPos = offset.top;
         var id = $(this).attr('id');
+        if (id.match(/any_input/)) {
+          id = $(this).children('input').val();
+        } else if (id == "table") {
+          id = $(this).children('select').val();
+        }
 
         let index = table.findIndex(x => x[0] === id);
 
@@ -94,7 +99,7 @@ Rollbar.info("Query builder inicialized");
               roundedTable.push(roundTableFn(table[i]));
           };
 
-    roundedTable = roundedTable.filter(e => e[1]>=x_pos-10 && e[2]>=y_pos-10);
+    roundedTable = roundedTable.filter(e => e[1]>=(x_pos-10) && e[2]>=(y_pos-10));
 
     roundedTable = roundedTable.filter(e => !e.includes("frame"));
 
@@ -105,7 +110,7 @@ Rollbar.info("Query builder inicialized");
       return a[2] - b[2];
     });
 
-    elements='<pre><code class="language-sql"> SELECT';
+    elements = '<pre><code class="language-sql"> SELECT';
     for(var i = 0; i < sortedTable.length; i++) {
       elements += ' ' + sortedTable[i][0];
     }
@@ -136,28 +141,30 @@ Rollbar.info("Query builder inicialized");
     document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('rql_btn').addEventListener('click', DocsTab);
       });
+
+    //TODO: create keyup function for input fields
   </script> 
 <div class="enclosure">
 
 <div class="items">
 
   <div id ="req_box" class="store">Required
-    <div id="select" class="stick">SELECT</div>
-    <div id="from" class="drag-drop">FROM</div>
+    <div id="SELECT" class="stick">SELECT</div>
+    <div id="FROM" class="drag-drop">FROM</div>
     <div id="table" class="drag-drop">
       <select name="tables" id="tbl_pick">
         <option value="it_oc">item_occurence</option>
         <option value="deploy">deploy</option>
       </select>
     </div>
-    <div id="where" class="drag-drop">WHERE</div>
+    <div id="WHERE" class="drag-drop">WHERE</div>
   </div>
 
   <div id ="opt_box" class="store">Optional
-    <div id="star" class="drag-drop">*</div>
-    <div id="group_by" class="drag-drop">GROUP BY</div>
-    <div id="order_by" class="drag-drop">ORDER BY</div>
-    <div id="limit" class="drag-drop">LIMIT</div>
+    <div id="*" class="drag-drop">*</div>
+    <div id="GROUP BY" class="drag-drop">GROUP BY</div>
+    <div id="ORDER BY" class="drag-drop">ORDER BY</div>
+    <div id="LIMIT" class="drag-drop">LIMIT</div>
     <!--TODO: make textbox width dynamic, make size equal with the other elements-->
     <div id="any_input" class="drag-drop">
       <input id="any_text_0" class="input-block">

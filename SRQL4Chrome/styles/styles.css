@@ -110,5 +110,7 @@
   padding: 10px;
   width: 80%;
   transition: background-color 0.3s;
-  height: 100px;
+  height: auto;
+  min-height: 100px;
+
 }
